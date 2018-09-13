@@ -6,16 +6,7 @@ class Board extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            notes:[
-                {
-                    id:0,
-                    note: "Eat Food"
-                },
-                {
-                    id:1,
-                    note:"Get Milk"
-                }
-            ]
+            notes:[]
         };
         this.eachNote = this.eachNote.bind(this);
         this.update = this.update.bind(this);
@@ -31,6 +22,17 @@ class Board extends Component {
                 note => (note.id !== i) ? note : {...note, note: newText}
                 )
         }));
+    }
+
+    componentWillMount() {
+        let self = this;
+        if(this.props.count) {
+            fetch(`https://baconipsum.com/api/?type=all-meat&sentences=${this.props.count}`)
+                .then(response => response.json())
+                .then(json => json[0]
+                    .split('. ')
+                    .forEach(sentence => self.add(sentence.substring(0, 25))));
+        }
     }
 
     remove(id){
