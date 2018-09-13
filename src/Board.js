@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Note from './Note';
+import {FaPlusSquare} from 'react-icons/fa';
 
 class Board extends Component {
     constructor(props) {
@@ -19,6 +20,8 @@ class Board extends Component {
         this.eachNote = this.eachNote.bind(this);
         this.update = this.update.bind(this);
         this.remove = this.remove.bind(this);
+        this.add = this.add.bind(this);
+        this.nextId = this.nextId.bind(this);
     }
 
     update(newText, i){
@@ -47,11 +50,29 @@ class Board extends Component {
         )
     }
 
+    add(text){
+        this.setState(prevState => ({
+            notes: [
+                ...prevState.notes,
+                {
+                    id: this.nextId(),
+                    note: text
+                }
+            ]
+            })
+        );
+    }
+
+    nextId(){
+        this.uniqueId = this.uniqueId || 0;
+        return this.uniqueId++;
+    }
 
     render() {
         return (
             <div className="board">
                 {this.state.notes.map(this.eachNote)}
+                <button id="add" onClick={this.add.bind(null, "New Note")}> <FaPlusSquare/> </button>
             </div>
         );
     }
