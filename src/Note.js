@@ -23,18 +23,22 @@ class Note extends Component {
         });
     }
     remove(){
-        alert('Removing Node');
+        this.props.onRemove(this.props.index);
     }
 
-    save() {
-        alert(this._newVlaue.value);
+    save(e) {
+        e.preventDefault();
+        this.props.onChange(this._newVlaue.value, this.props.index);
+        this.setState({
+            editing:false
+        });
     }
     renderForm(){
         return (
             <div className="note">
-                <form>
+                <form onSubmit={this.save}>
                     <textarea ref={input => this._newVlaue = input} />
-                    <button id='save' onClick={this.save}><FaSave /></button>
+                    <button id='save' ><FaSave /></button>
                 </form>
             </div>
 
